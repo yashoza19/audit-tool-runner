@@ -1,6 +1,6 @@
 module audit-tool-runner
 
-go 1.17
+go 1.16
 
 require (
 	github.com/sirupsen/logrus v1.8.1
@@ -8,7 +8,6 @@ require (
 )
 
 require (
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
-	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+	github.com/gobuffalo/envy v1.10.1
+	github.com/minio/minio-go/v7 v7.0.23
 )
