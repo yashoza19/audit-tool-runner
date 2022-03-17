@@ -33,10 +33,6 @@ WORKDIR ${HOME}
 RUN curl -Lfo /usr/local/bin/operator-sdk https://github.com/operator-framework/operator-sdk/releases/download/v${OPERATOR_SDK_VERSION:-1.14.0}/operator-sdk_${OS:-linux}_${ARCH:-amd64} \
     && chmod +x /usr/local/bin/operator-sdk
 
-# Add minio client (mc) binary
-RUN curl -Lfo /usr/local/bin/mc https://dl.min.io/client/mc/release/linux-amd64/mc \
-    && chmod +x /usr/local/bin/mc
-
 RUN chown -R audit-tool-runner: ${HOME}
 
 #COPY --from=builder /workspace/bundlelist.json /opt/audit-tool/bundlelist.json
