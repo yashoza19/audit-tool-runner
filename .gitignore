@@ -1,0 +1,6 @@
+*.yml
+*.yaml
+
+.idea
+.idea/
+.idea/*
