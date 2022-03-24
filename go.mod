@@ -9,11 +9,12 @@ require (
 
 require (
 	github.com/gobuffalo/envy v1.10.1
+	github.com/google/uuid v1.1.2
 	github.com/itchyny/gojq v0.12.7
 	github.com/minio/minio-go/v7 v7.0.23
 	github.com/openshift/hive v1.1.16
 	github.com/openshift/hive/apis v0.0.0
-	k8s.io/api v0.23.5
+	k8s.io/api v0.23.5 // indirect
 	k8s.io/apimachinery v0.23.5
 	k8s.io/client-go v12.0.0+incompatible
 )

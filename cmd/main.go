@@ -12,7 +12,7 @@ func main() {
 		Long:  "",
 	}
 
-	rootCmd.AddCommand(setupCmd())
+	rootCmd.AddCommand(auditCmd())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
