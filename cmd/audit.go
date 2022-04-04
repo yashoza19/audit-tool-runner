@@ -206,8 +206,16 @@ func run(cmd *cobra.Command, args []string) error {
 
 	log.Infof("Deleting cluster pool %s.\n", cpName)
 	hvclient := GetHiveClient()
-	clusterPoolPatch := []byte(`[{"spec":{"runningCount": 0, "size":0}}]`)
-
+	payload := []PatchValue{{
+		Op:    "replace",
+		Path:  "/spec/size",
+		Value: uint32(0),
+	}, {
+		Op:    "replace",
+		Path:  "/spec/runningCount",
+		Value: uint32(0),
+	}}
+	clusterPoolPatch, _ := json.Marshal(payload)
 	clusterPool, err := hvclient.HiveV1().ClusterPools("hive").Patch(context.TODO(), cpName, types.JSONPatchType, clusterPoolPatch, metav1.PatchOptions{})
 	if err != nil {
 		log.Errorf("Unable to update cluster pool %s for deletion: %v\n", cpName, err)
