@@ -41,3 +41,9 @@ type JobFlags struct {
 	ClaimName   string `json:"claimName"`
 	Kubeconfig  string `json:"kubeconfig"`
 }
+
+type PatchValue struct {
+	Op    string `json:"op"`
+	Path  string `json:"path"`
+	Value uint32 `json:"value"`
+}
