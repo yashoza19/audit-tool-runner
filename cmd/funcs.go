@@ -60,10 +60,12 @@ func GetJobStatus(job string) string {
 		return "Error"
 	}
 
+	log.Infof("Getting status for job %s.\n", auditJob.Name)
+
 	auditJobConditions := auditJob.Status.Conditions
 	var jobCondition string
 	for _, auditJobCondition := range auditJobConditions {
-		if auditJobCondition.Type != "" && (auditJobCondition.Type == "Completed" || auditJobCondition.Type == "Failed") {
+		if auditJobCondition.Type != "" {
 			jobCondition = string(auditJobCondition.Type)
 		}
 	}
@@ -97,6 +99,7 @@ func RunOperatorAudit(ch chan string, claimflags ClaimFlags, jobflags JobFlags) 
 		log.Errorf("Unable to get ClusterClaim: %v\n", err)
 		ch <- "Error"
 		return
+
 	}
 	cdNameNamespace := clusterClaim.Spec.Namespace
 	clusterDeployment, err := hvclient.HiveV1().ClusterDeployments(cdNameNamespace).Get(ctx, cdNameNamespace, metav1.GetOptions{})
@@ -107,20 +110,6 @@ func RunOperatorAudit(ch chan string, claimflags ClaimFlags, jobflags JobFlags) 
 	}
 
 	kubeconfigSecret := clusterDeployment.Spec.ClusterMetadata.AdminKubeconfigSecretRef
-
-	k8sclient := GetK8sClient()
-	kubeconfig, err := k8sclient.CoreV1().Secrets(cdNameNamespace).Get(ctx, kubeconfigSecret.Name, metav1.GetOptions{})
-	if err != nil {
-		log.Errorf("Unable to get kubeconfig for cluster under test: %v\n", err)
-		ch <- "Error"
-		return
-	}
-
-	if err = os.WriteFile("/tmp/"+claimflags.Name, kubeconfig.Data["raw-kubeconfig"], 0644); err != nil {
-		log.Errorf("Unable to create kubeconfig: %v\n", err)
-		ch <- "Error"
-		return
-	}
 
 	// Add logging configmap to claimed cluster
 	log.Infof("Adding configmap for logging to cluster %s\n", cdNameNamespace)

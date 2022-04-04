@@ -217,14 +217,16 @@ func run(cmd *cobra.Command, args []string) error {
 		Value: uint32(0),
 	}}
 	payloadBytes, _ := json.Marshal(payload)
-	_, err = hvclient.HiveV1().ClusterPools("hive").Patch(context.TODO(), cpName, types.JSONPatchType, payloadBytes, metav1.PatchOptions{})
+  
+	clusterPool, err := hvclient.HiveV1().ClusterPools("hive").Patch(context.TODO(), cpName, types.JSONPatchType, clusterPoolPatch, metav1.PatchOptions{})
 	if err != nil {
 		log.Errorf("Unable to update cluster pool %s for deletion: %v\n", cpName, err)
 	}
 
-	err = hvclient.HiveV1().ClusterPools("hive").Delete(context.TODO(), cpName, metav1.DeleteOptions{})
+	err = hvclient.HiveV1().ClusterPools("hive").Delete(context.TODO(), clusterPool.Name, metav1.DeleteOptions{})
 	if err != nil {
-		log.Errorf("Unable to delete the cluster pool %s: %v\n", cpName, err)
+		log.Errorf("Unable to delete the cluster pool %s: %v\n", clusterPool.Name, err)
+
 	}
 
 	return nil
